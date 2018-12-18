@@ -14,6 +14,24 @@ export class BasicPageContentResolver {
     this.basicPageContentService = Container.get("BasicPageContentService");
   }
 
+  formatDocument(document: string, context, type): string {
+    if (context.visitorContext) {
+      // make segmentation
+      //console.log(context.visitorContext);
+      //document = segmentationService.contentSegmentation(document, context.visitorContext)
+    }
+
+    if (type) {
+      // get the converter
+      //converter = converterService.getConverter(type)
+      //if(converter) {
+      //  document = converter.convert(document)
+      //}
+      document = "<p>" + document + "</p>";
+    }
+    return document;
+  }
+
   @Query(returns => BasicPageContent, { nullable: true })
   async getBasicPageContentByUuid(
     @Arg("uuid") uuid: string,
@@ -39,9 +57,11 @@ export class BasicPageContentResolver {
   @FieldResolver(type => String, { name: "getSummaryByFormat" })
   async getSummaryByFormat(
     @Root() basicPageContent: BasicPageContent,
+    @Ctx() ctx: any,
     @Arg("type", { nullable: true }) type?: string
   ): Promise<string> {
-    return basicPageContent.summary + type;
+
+    return this.formatDocument(basicPageContent.summary, ctx, type)
   }
 
   @FieldResolver(type => String, { name: "getBodyByFormat" })
@@ -50,7 +70,7 @@ export class BasicPageContentResolver {
     @Ctx() ctx: any,
     @Arg("type", { nullable: true }) type?: string
   ): Promise<string> {
-    console.log(ctx.visitorContext);
-    return basicPageContent.body + type;
+
+    return  this.formatDocument(basicPageContent.body, ctx, type)
   }
 }
