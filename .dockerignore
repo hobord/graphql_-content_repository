@@ -1,0 +1,13 @@
+node_modules
+dist
+.git
+.idea
+npm-debug.log
+.DS_Store
+.vscode
+.gitignore
+.dockerignore
+.editorconfig
+rest_test_block.json
+rest_test_content.json
+

@@ -1,0 +1,36 @@
+{
+    "compilerOptions": {
+        "target": "es2016",
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "pretty": true,
+        "sourceMap": true,
+        "outDir": "dist",
+        "importHelpers": true,
+        "strict": true,
+        "noImplicitAny": false,
+        "strictNullChecks": false,
+        "noImplicitThis": true,
+        "alwaysStrict": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": false,
+        "noImplicitReturns": true,
+        "noFallthroughCasesInSwitch": true,
+        "lib": ["es2016", "esnext.asynciterable"],
+        "baseUrl": ".",
+        "rootDirs": ["src","dist"],
+        "paths": {
+            "@src/*": ["src/*"],
+        },
+        "allowSyntheticDefaultImports": true,
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        
+    },
+    "include": [
+        "src/**/*"
+    ],
+    "files": [
+        "src/typings/gql.d.ts"
+    ]
+}

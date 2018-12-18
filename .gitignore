@@ -1,0 +1,7 @@
+/.vscode/temp.sql
+/dist
+/node_modules
+package-lock.json
+.env
+.env.test
+

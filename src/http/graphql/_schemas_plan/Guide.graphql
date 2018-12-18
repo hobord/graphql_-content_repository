@@ -1,0 +1,65 @@
+# import HrefLang from 'CommonTypes.graphql'
+# import IPage from 'CommonTypes.graphql'
+
+type Guide implements IPage {
+  uuid: ID!
+  nid: Int!
+  type: String!
+  template: String
+
+  title: String!
+  createdAt: String
+  updatedAt: String
+  promoted: Boolean
+  sticky: Boolean
+  hasAmp: Boolean
+  langcode: String
+
+  uri: String
+  hrefLangs: [HrefLang]
+
+  metatags: [MetatagValue]
+
+  leadText: ContentText
+  summary: ContentText
+  coverImage: Image
+  body: ContentText
+  chapters: [GuideChapter]
+
+  publishedAt: String
+  author: Author
+  categories: [Category]
+  tags: [Category]
+}
+
+type GuideChapter implements IPage {
+  uuid: ID!
+  nid: Int!
+  type: String!
+  template: String
+  status: Int!
+  title: String!
+  createdAt: String
+  updatedAt: String
+  promoted: Boolean
+  sticky: Boolean
+  hasAmp: Boolean
+  langcode: String
+
+  uri: String
+  hrefLangs: [HrefLang]
+
+  metatags: [MetatagValue]
+
+  leadText: ContentText
+  summary: ContentText
+  coverImage: [Image]
+  body: ContentText
+  
+  publishedAt: String
+  author: Author
+  guide: Guide
+  chapters: [GuideChapter]
+  categories: [Category]
+  tags: [Category]
+}

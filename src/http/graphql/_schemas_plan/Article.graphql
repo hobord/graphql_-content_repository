@@ -1,0 +1,44 @@
+# import HrefLang from 'CommonTypes.graphql'
+# import IPage from 'CommonTypes.graphql'
+
+input InputCategory {
+  uuid: ID
+  tid: Int
+}
+input InputArticleQuery {
+  category: [InputCategory]
+  langcode: [String]
+  path: String
+  start: Int
+  limit: Int
+  context: String
+}
+
+type Article implements IPage {
+  uuid: ID!
+  nid: Int!
+  type: String!
+  template: String
+  title: String!
+  createdAt: String
+  updatedAt: String
+  promoted: Boolean
+  sticky: Boolean
+  hasAmp: Boolean
+  langcode: String
+
+  uri: String
+  hrefLangs: [HrefLang]
+
+  metatags: [MetatagValue]
+
+  leadText: ContentText
+  summary: ContentText
+  coverImage: Image
+  body: ContentText
+
+  publishedAt: String
+  author: Author
+  categories: [Category]
+  tags: [Category]
+}

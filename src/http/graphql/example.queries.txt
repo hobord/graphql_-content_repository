@@ -1,0 +1,89 @@
+QUERIES
+
+query ArticleByPath($articleQuery: InputArticleQuery) {
+  articles(articleQuery: $articleQuery) {
+    nid
+    title
+    uri
+    leadText {
+      textForat
+    }
+     body{
+      textForat
+    }
+    author {
+      name
+      coverImage {
+        url
+        width
+        height
+      }
+    }
+  }
+}
+
+query getPage($pageQuery: PageQueryInput) {
+  getPage(pageQuery: $pageQuery) {
+    uri
+    type
+    template
+    hasAmp
+    metatags {
+      name
+      value
+    }
+    title
+    __typename
+    ... on Article {\
+      coverImage {
+        uuid
+        url
+        width
+        height
+      }
+    }
+  }
+}
+
+QUERY VARIABLES
+
+{
+  "articleQuery": {
+    "path": "/",
+    "context": "{\"lang\":\"en\"}"
+  },
+  "pageQuery": {
+    "uri": "/",
+    "lang": "en"
+  }
+}
+
+
+
+-----------------------------
+
+
+{
+  getBasicPageContentByUuid(uuid: "43434", context: {
+    properties: [
+      {name: "ftd", value: "1"}, 
+      {name: "language", value: "en"}
+    ]}) {
+    uuid
+    title
+    template
+    createdAt
+    uri
+    hasAmp
+    hrefLangs {
+      uri
+      langcode
+    }
+    metatags {
+      name
+      value
+    }
+    getSummaryByFormat(type: "html")
+    getBodyByFormat(type: "html")
+  }
+}

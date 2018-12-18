@@ -1,0 +1,35 @@
+# import HrefLang from 'CommonTypes.graphql'
+# import IPage from 'CommonTypes.graphql'
+
+type Category {
+  uuid: ID!
+  tid: Int!
+  parentId: Int!
+  parent: Category
+  group: String!
+  name: String!
+  langcode: String
+  tanslationSource: String
+  transaltions: [Category]
+  weight: Int
+  uri: String
+}
+
+type CategoryPage implements IPage {
+  category: Category
+  type: String!
+  template: String
+
+  promoted: Boolean
+  sticky: Boolean
+  hasAmp: Boolean
+  langcode: String
+
+  uri: String
+  hrefLangs: [HrefLang]
+  metatags: [MetatagValue]
+
+  title: String
+  summary: ContentText
+  body: ContentText
+}

@@ -1,0 +1,15 @@
+type BlockContent {
+  uuid: ID!
+  id: Int!
+  type: String!
+
+  createdAt: String
+  updatedAt: String
+  promoted: Boolean
+  langcode: String
+
+  title: String
+  summary: ContentText
+  body: ContentText
+} 
+

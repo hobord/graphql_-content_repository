@@ -1,0 +1,24 @@
+# import HrefLang from 'CommonTypes.graphql'
+# import IPage from 'CommonTypes.graphql'
+
+type BasicPageContent implements IPage {
+  uuid: ID!
+  nid: Int!
+  type: String!
+  template: String
+
+  createdAt: String
+  updatedAt: String
+  promoted: Boolean
+  sticky: Boolean
+  hasAmp: Boolean
+  langcode: String
+
+  uri: String
+  hrefLangs: [HrefLang]
+  metatags: [MetatagValue]
+
+  title: String
+  summary: ContentText
+  body: ContentText
+}

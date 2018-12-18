@@ -1,0 +1,42 @@
+type Image {
+  uuid: ID!
+  title: String
+  alt: String
+  width: Int
+  height: Int
+  url: String
+  mimeType: String
+  size: Int
+  updatedAt: String
+}
+
+type ContentText {
+  jsonForat: String
+  textForat: String
+  htmlFormat: String
+  ampFormat: String
+}
+
+type HrefLang {
+  langcode: String!
+  url: String
+  uri: String
+}
+
+type MetatagValue {
+  name: String!
+  value: String!
+}
+
+
+interface IPage {
+  type: String!
+  template: String
+  hasAmp: Boolean
+
+  uri: String
+  hrefLangs: [HrefLang]
+  metatags: [MetatagValue]
+
+  title: String
+}

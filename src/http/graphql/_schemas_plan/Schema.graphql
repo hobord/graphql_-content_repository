@@ -1,0 +1,54 @@
+# import Image from 'CommonTypes.graphql'
+# import HrefLang from 'CommonTypes.graphql'
+# import Category from 'Category.graphql'
+# import BlockContent from 'BlockContent.graphql'
+# import BasicPageContent from 'BasicPageContent.graphql'
+# import GuideChapter from 'Guide.graphql'
+# import Author from 'Author.graphql'
+# import ArticleQuery from 'Article.graphql'
+# import Article from 'Article.graphql'
+
+union PageContent = BasicPageContent | Article | Guide | GuideChapter | Author | CategoryPage
+
+
+type Page implements IPage {
+  uuid: ID
+  nid: ID
+  type: String!
+  template: String
+  hasAmp: Boolean
+
+  uri: String
+  hrefLangs: [HrefLang]
+  metatags: [MetatagValue]
+
+  title: String
+}
+
+input PageQueryInput {
+  uri: String!
+  lang: String!
+  amp: Boolean
+  context: String
+}
+
+# the schema allows the following query:
+type Query {
+  getPage(pageQuery: PageQueryInput): IPage
+  articles(articleQuery: InputArticleQuery): [Article]
+  # articlesByCategory
+}
+
+# this schema allows the following mutation:
+# type Mutation {
+  # upvotePost (
+  #   postId: ID!
+  # ): Post
+# }
+
+# we need to tell the server which types represent the root query
+# and root mutation types. We call them RootQuery and RootMutation by convention.
+schema {
+  query: Query
+  # mutation: Mutation
+}

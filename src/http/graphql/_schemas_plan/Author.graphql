@@ -1,0 +1,30 @@
+# import HrefLang from 'CommonTypes.graphql'
+# import IPage from 'CommonTypes.graphql'
+
+union AuthorContent = Article | GuideChapter
+
+type Author implements IPage {
+  uuid: ID!
+  nid: Int!
+  type: String!
+  template: String
+  title: String
+  createdAt: String
+  updatedAt: String
+  promoted: Boolean
+  sticky: Boolean
+  hasAmp: Boolean
+  langcode: String
+
+  uri: String
+  hrefLangs: [HrefLang]
+  metatags: [MetatagValue]
+
+  name: String
+  coverImage: Image
+  summary: ContentText
+  body: ContentText
+  authorContent: [AuthorContent]
+  articles: [Article]
+  guideChapters: [GuideChapter]
+}
