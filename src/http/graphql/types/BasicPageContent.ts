@@ -48,8 +48,8 @@ export class BasicPageContent { //  implements IPage
   @Field(type => [HrefLang], { nullable: true })
   hrefLangs: HrefLang[]
 
-  @Field(type => [BasicPageContent], { nullable: true })
-  languages: [BasicPageContent]
+  // @Field(type => [BasicPageContent], { nullable: true })
+  // languages: [BasicPageContent]
 
   @Field(type => [Metatag])
   metatags: Metatag[]

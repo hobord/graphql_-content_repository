@@ -60,8 +60,7 @@ export class BasicPageContentResolver {
     @Ctx() ctx: any,
     @Arg("type", { nullable: true }) type?: string
   ): Promise<string> {
-
-    return this.formatDocument(basicPageContent.summary, ctx, type)
+    return this.formatDocument(basicPageContent.summary, ctx, type);
   }
 
   @FieldResolver(type => String, { name: "getBodyByFormat" })
@@ -70,7 +69,21 @@ export class BasicPageContentResolver {
     @Ctx() ctx: any,
     @Arg("type", { nullable: true }) type?: string
   ): Promise<string> {
+    return this.formatDocument(basicPageContent.body, ctx, type);
+  }
 
-    return  this.formatDocument(basicPageContent.body, ctx, type)
+  @FieldResolver(type => [BasicPageContent], { nullable: true })
+  async languages(
+    @Root() basicPageContent: BasicPageContent
+  ): Promise<BasicPageContent[]> {
+    // TODO: implement as well
+    const basicPageContentEntity: BasicPageContentEntity = await this.basicPageContentService.getByUuid(
+      basicPageContent.uuid
+    );
+    const basicPageContent2 = new BasicPageContent();
+
+    basicPageContent2.fillWithEntity(basicPageContentEntity);
+
+    return [basicPageContent2];
   }
 }

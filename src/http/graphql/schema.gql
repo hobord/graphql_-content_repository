@@ -16,13 +16,13 @@ type BasicPageContent {
   langcode: String!
   uri: String!
   hrefLangs: [HrefLang!]
-  languages: [BasicPageContent!]
   metatags: [Metatag!]!
   title: String!
   summary: String!
   body: String!
   getSummaryByFormat(type: String): String!
   getBodyByFormat(type: String): String!
+  languages: [BasicPageContent!]
 }
 
 input ContextInput {
