@@ -11,6 +11,8 @@ export class BasicPageContent {
 
   segmentedBy: string[]
 
+  layout?: string
+
   template?: string
 
   createdAt?: string

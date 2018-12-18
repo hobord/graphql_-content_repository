@@ -6,6 +6,7 @@
 # Object representing an BasicPageContent
 type BasicPageContent {
   uuid: String!
+  layout: String!
   template: String!
   createdAt: String!
   updatedAt: String!

@@ -19,6 +19,9 @@ export class BasicPageContent { //  implements IPage
   uuid: string;
 
   @Field()
+  layout?: string
+
+  @Field()
   template?: string
 
   @Field()

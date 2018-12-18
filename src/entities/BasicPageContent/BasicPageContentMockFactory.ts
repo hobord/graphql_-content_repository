@@ -32,6 +32,7 @@ export class BasicPageContentMockFactory {
       uuid: faker.random.alphaNumeric(10),
       segmentedBy: segmentedBy,
       title: faker.random.words(5),
+      layout: faker.random.word(),
       template: faker.random.word(),
       createdAt: faker.date.recent().toUTCString(),
       updatedAt: faker.date.recent().toUTCString(),
