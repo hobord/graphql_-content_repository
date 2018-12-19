@@ -1,12 +1,12 @@
 import { InputType, Field } from 'type-graphql';
 import { ContextProperty as ContextProperty } from './ContextProperty';
-import { Context } from '@src/entities';
+import { IVisitorContext } from '@src/entities';
 
 
 @InputType()
 export class ContextInput {
-  convertToHash(): Context {
-    let hash: Context = {};
+  convertToHash(): IVisitorContext {
+    let hash: IVisitorContext = {};
 
     for (let index = 0; index < this.properties.length; index++) {
       const property = this.properties[index];

@@ -1,2 +1,2 @@
 export * from './BasicPageContent'
-export * from './Context'
+export * from './IVisitorContext'

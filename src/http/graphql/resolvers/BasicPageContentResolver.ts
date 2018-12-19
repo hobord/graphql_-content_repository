@@ -4,7 +4,7 @@ import { BasicPageContent as BasicPageContentEntity } from "@src/entities/BasicP
 import { Container } from "typedi";
 import { BasicPageContentService } from "@src/services/BasicPageContentService/BasicPageContentService";
 import { ContextInput } from "../types/ContextInput";
-import { Context } from "@src/entities";
+import { IVisitorContext } from "@src/entities";
 import { DocumentConverterService } from "@src/services/DocumentConverterService/DocumentConverterService";
 import { ISegmentationService } from "@src/services/SegmentationService/SegmentationService";
 
@@ -49,7 +49,7 @@ export class BasicPageContentResolver {
     // if there is context argument we must to convert to hash key object format
     // and add to request context
     if (context) {
-      const contextHash: Context = context.convertToHash();
+      const contextHash: IVisitorContext = context.convertToHash();
       ctx.visitorContext = contextHash;
     }
 
