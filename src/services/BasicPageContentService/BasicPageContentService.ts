@@ -14,4 +14,15 @@ export class BasicPageContentService {
 
     return content
   }
+
+  getLanguageVariations(uuid: string): Promise<BasicPageContent[]> {
+    // check the cache
+    
+    // get the content from repository
+    const contents = this.repository.getLanguageVariations(uuid)
+    
+    // save to cache
+
+    return contents
+  }
 }

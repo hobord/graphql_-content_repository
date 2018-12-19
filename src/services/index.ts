@@ -3,6 +3,7 @@ import { MockBasicPageContentRepository } from '@src/repositories/BasicPageConte
 import { IBasicPageContentRepository } from '@src/repositories/BasicPageContentRepository/IBasicPageContentRepository';
 import { BasicPageContentService } from './BasicPageContentService/BasicPageContentService';
 import { BasicPageContentMockFactory, IBasicPageContentFactory } from '@src/entities';
+import { MockSegmentationService, ISegmentationService } from './SegmentationService/SegmentationService';
 
 /**
  * Instances creation
@@ -12,3 +13,5 @@ const basicPageContentRepository: IBasicPageContentRepository = new MockBasicPag
 const basicPageContentService: IBasicPageContentRepository =  new BasicPageContentService(basicPageContentRepository);
 Container.set('BasicPageContentService', basicPageContentService);
 
+const segmentationService: ISegmentationService = new MockSegmentationService();
+Container.set('ISegmentationService', segmentationService);

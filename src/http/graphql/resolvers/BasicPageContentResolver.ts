@@ -5,30 +5,38 @@ import { Container } from "typedi";
 import { BasicPageContentService } from "@src/services/BasicPageContentService/BasicPageContentService";
 import { ContextInput } from "../types/ContextInput";
 import { Context } from "@src/entities";
+import { DocumentConverterService } from "@src/services/DocumentConverterService/DocumentConverterService";
+import { ISegmentationService } from "@src/services/SegmentationService/SegmentationService";
 
 @Resolver(of => BasicPageContent)
 export class BasicPageContentResolver {
-  private basicPageContentService: BasicPageContentService;
-
-  constructor() {
-    this.basicPageContentService = Container.get("BasicPageContentService");
+  constructor(
+    protected basicPageContentService?: BasicPageContentService,
+    protected converterService?: DocumentConverterService,
+    protected segmentationService?: ISegmentationService
+  ) {
+    if (!basicPageContentService) {
+      this.basicPageContentService = Container.get("BasicPageContentService");
+    }
+    if (!converterService) {
+      this.converterService = Container.get("DocumentConverterService");
+    }
+    if (!segmentationService) {
+      this.segmentationService = Container.get("SegmentationService");
+    }
   }
 
-  formatDocument(document: string, context, type): string {
-    if (context.visitorContext) {
+  formatDocument(document: string, to, context?): string {
+    if (context && context.visitorContext) {
       // make segmentation
-      //console.log(context.visitorContext);
-      //document = segmentationService.contentSegmentation(document, context.visitorContext)
+      document = this.segmentationService.contentSegmentation(
+        document,
+        context.visitorContext
+      );
     }
 
-    if (type) {
-      // get the converter
-      //converter = converterService.getConverter(type)
-      //if(converter) {
-      //  document = converter.convert(document)
-      //}
-      document = "<p>" + document + "</p>";
-    }
+    document = this.converterService.convert(document, to);
+    // document = "<p>" + document + "</p>";
     return document;
   }
 
@@ -38,17 +46,22 @@ export class BasicPageContentResolver {
     @Arg("context", { nullable: true }) context: ContextInput,
     @Ctx() ctx: any
   ): Promise<BasicPageContent | undefined> {
+    // if there is context argument we must to convert to hash key object format
+    // and add to request context
     if (context) {
       const contextHash: Context = context.convertToHash();
       ctx.visitorContext = contextHash;
     }
 
+    // get content by uuid from the service (repository)
     const basicPageContentEntity: BasicPageContentEntity = await this.basicPageContentService.getByUuid(
       uuid
     );
 
+    // create a response Object
     const basicPageContent = new BasicPageContent();
 
+    // fill the response Object by entity
     basicPageContent.fillWithEntity(basicPageContentEntity);
 
     return basicPageContent;
@@ -57,33 +70,65 @@ export class BasicPageContentResolver {
   @FieldResolver(type => String, { name: "getSummaryByFormat" })
   async getSummaryByFormat(
     @Root() basicPageContent: BasicPageContent,
-    @Ctx() ctx: any,
-    @Arg("type", { nullable: true }) type?: string
+    @Ctx() ctx: any, // http context
+    @Arg("type", { nullable: true }) type?: string // required result format, aka html / plain text etc...
   ): Promise<string> {
-    return this.formatDocument(basicPageContent.summary, ctx, type);
+    let document: string = basicPageContent.summary;
+
+    // make segmentation
+    document = this.segmentationService.contentSegmentation(
+      document,
+      ctx.visitorContext
+    );
+
+    // do the conversion
+    document = this.formatDocument(document, type);
+
+    return document;
   }
 
   @FieldResolver(type => String, { name: "getBodyByFormat" })
   async getBodyByFormat(
     @Root() basicPageContent: BasicPageContent,
-    @Ctx() ctx: any,
-    @Arg("type", { nullable: true }) type?: string
+    @Ctx() ctx: any, // http context
+    @Arg("type", { nullable: true }) type?: string // required result format, aka html / plain text etc...
   ): Promise<string> {
-    return this.formatDocument(basicPageContent.body, ctx, type);
+    let document: string = basicPageContent.body;
+
+    // make segmentation
+    document = this.segmentationService.contentSegmentation(
+      document,
+      ctx.visitorContext
+    );
+
+    // do the conversion
+    document = this.formatDocument(document, type);
+
+    return document;
   }
 
+  /**
+   * get all language variations of this content
+   * 
+   * @param basicPageContent 
+   */
   @FieldResolver(type => [BasicPageContent], { nullable: true })
   async languages(
     @Root() basicPageContent: BasicPageContent
   ): Promise<BasicPageContent[]> {
-    // TODO: implement as well
-    const basicPageContentEntity: BasicPageContentEntity = await this.basicPageContentService.getByUuid(
+    const basicPageContents: BasicPageContent[] = []
+    
+    const basicPageContentEntities: BasicPageContentEntity[] = await this.basicPageContentService.getLanguageVariations(
       basicPageContent.uuid
     );
-    const basicPageContent2 = new BasicPageContent();
+    
+    for (let index = 0; index < basicPageContentEntities.length; index++) {
+      const basicPageContentEntity = basicPageContentEntities[index];
+      const basicPageContent = new BasicPageContent();
+      basicPageContent.fillWithEntity(basicPageContentEntity);
+      basicPageContents.push(basicPageContent);
+    }
 
-    basicPageContent2.fillWithEntity(basicPageContentEntity);
-
-    return [basicPageContent2];
+    return basicPageContents;
   }
 }
