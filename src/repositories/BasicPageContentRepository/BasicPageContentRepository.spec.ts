@@ -25,4 +25,9 @@ describe("MockBasicPageContentRepository tests", () => {
     let content: BasicPageContent = await repository.getByUuid(uuid);
     expect(content.uuid).equal(uuid);
   });
+  it("lang equal test", async () => {
+    const uuid = faker.random.alphaNumeric(10);
+    let content: BasicPageContent = await repository.getByUuidSpecificLanguage(uuid, 'en');
+    expect(content.langcode).equal('en');
+  });
 });

@@ -46,5 +46,5 @@ type Metatag {
 }
 
 type Query {
-  getBasicPageContentByUuid(context: ContextInput, uuid: String!): BasicPageContent
+  getBasicPageContentByUuid(context: ContextInput, language: String, uuid: String!): BasicPageContent
 }

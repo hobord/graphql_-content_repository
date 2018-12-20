@@ -11,7 +11,6 @@ export class DocumentConverterService {
 
   convert(document: string, toType: string): string {
     if (this.converters.has(toType)) {
-      console.log(this.converters)
       return this.converters.get(toType).convert(document)
     }
     return document

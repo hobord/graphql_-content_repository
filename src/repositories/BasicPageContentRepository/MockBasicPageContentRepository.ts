@@ -10,6 +10,12 @@ export class MockBasicPageContentRepository
     basicPageContent.uuid = uuid;
     return basicPageContent;
   }
+  async getByUuidSpecificLanguage(uuid: string, langcode: string): Promise<BasicPageContent> {
+    const basicPageContent: BasicPageContent = this.basicPageContentFactory.create();
+    basicPageContent.uuid = uuid;
+    basicPageContent.langcode = langcode
+    return basicPageContent;
+  }
   async getLanguageVariations(uuid: string): Promise<BasicPageContent[]> {
     const basicPageContent: BasicPageContent = this.basicPageContentFactory.create();
     return [basicPageContent];

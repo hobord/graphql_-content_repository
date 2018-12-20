@@ -1,12 +1,12 @@
-import { Resolver, Query, Arg, FieldResolver, Root, Ctx } from "type-graphql";
-import { BasicPageContent } from "../types/BasicPageContent";
-import { BasicPageContent as BasicPageContentEntity } from "@src/entities/BasicPageContent/BasicPageContent";
 import { Container } from "typedi";
-import { BasicPageContentService } from "@src/services/BasicPageContentService/BasicPageContentService";
+import { Resolver, Query, Arg, FieldResolver, Root, Ctx } from "type-graphql";
+import { BasicPageContentService } from "@src/services";
+import { DocumentConverterService } from "@src/services";
+import { ISegmentationService } from "@src/services";
+import { BasicPageContent } from "../types/BasicPageContent";
 import { ContextInput } from "../types/ContextInput";
+import { BasicPageContent as BasicPageContentEntity } from "@src/entities";
 import { IVisitorContext } from "@src/entities";
-import { DocumentConverterService } from "@src/services/DocumentConverterService/DocumentConverterService";
-import { ISegmentationService } from "@src/services/SegmentationService/SegmentationService";
 
 @Resolver(of => BasicPageContent)
 export class BasicPageContentResolver {
@@ -27,24 +27,26 @@ export class BasicPageContentResolver {
   }
 
   formatDocument(document: string, to, context?): string {
+    // make segmentation
     if (context && context.visitorContext) {
-      // make segmentation
       document = this.segmentationService.contentSegmentation(
         document,
         context.visitorContext
       );
     }
 
+    // make document format conversion
     document = this.converterService.convert(document, to);
-    // document = "<p>" + document + "</p>";
+
     return document;
   }
 
   @Query(returns => BasicPageContent, { nullable: true })
   async getBasicPageContentByUuid(
+    @Ctx() ctx: any,
     @Arg("uuid") uuid: string,
-    @Arg("context", { nullable: true }) context: ContextInput,
-    @Ctx() ctx: any
+    @Arg("language", { nullable: true }) language?: string,
+    @Arg("context", { nullable: true }) context?: ContextInput
   ): Promise<BasicPageContent | undefined> {
     // if there is context argument we must to convert to hash key object format
     // and add to request context
@@ -54,9 +56,17 @@ export class BasicPageContentResolver {
     }
 
     // get content by uuid from the service (repository)
-    const basicPageContentEntity: BasicPageContentEntity = await this.basicPageContentService.getByUuid(
-      uuid
-    );
+    let basicPageContentEntity: BasicPageContentEntity
+    if (language) {
+      basicPageContentEntity = await this.basicPageContentService.getByUuidSpecificLanguage(
+        uuid,
+        language
+      );
+    } else {
+      basicPageContentEntity = await this.basicPageContentService.getByUuid(
+        uuid
+      );
+    }
 
     // create a response Object
     const basicPageContent = new BasicPageContent();
@@ -109,19 +119,19 @@ export class BasicPageContentResolver {
 
   /**
    * get all language variations of this content
-   * 
-   * @param basicPageContent 
+   *
+   * @param basicPageContent
    */
   @FieldResolver(type => [BasicPageContent], { nullable: true })
   async languages(
     @Root() basicPageContent: BasicPageContent
   ): Promise<BasicPageContent[]> {
-    const basicPageContents: BasicPageContent[] = []
-    
+    const basicPageContents: BasicPageContent[] = [];
+
     const basicPageContentEntities: BasicPageContentEntity[] = await this.basicPageContentService.getLanguageVariations(
       basicPageContent.uuid
     );
-    
+
     for (let index = 0; index < basicPageContentEntities.length; index++) {
       const basicPageContentEntity = basicPageContentEntities[index];
       const basicPageContent = new BasicPageContent();
