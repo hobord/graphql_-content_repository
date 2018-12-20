@@ -135,6 +135,53 @@ export class DrupalBasicPageContentRepository
 
     return basicPageContent;
   }
+  async getByUri(uri: string, langcode: string): Promise<BasicPageContent> {
+    const dbConnection = getConnection();
+    let query = dbConnection.createQueryBuilder()
+      .select('node.nid')
+      .addSelect('node.uuid')
+      .addSelect('node_field_data.created')
+      .addSelect('node_field_data.changed')
+      .addSelect('node_field_data.promote')
+      .addSelect('node_field_data.sticky')
+      .addSelect('node_field_data.title')
+      .addSelect('node_field_data.langcode')
+      .addSelect('node__body.body_summary')
+      .addSelect('node__body.body_value')
+      .addSelect('amp_taxonomy.name', 'hasAmp')
+      .addSelect('node__field_metatags.field_metatags_value', 'metatags')
+      .from('node', 'node')
+      .leftJoinAndSelect('node_field_data', 'node_field_data', 'node.nid = node_field_data.nid AND node_field_data.langcode = :langcode', { langcode: langcode})
+      .leftJoinAndSelect('node__body', 'node__body', 'node.nid = node__body.entity_id AND node_field_data.langcode = node__body.langcode')
+      .leftJoinAndSelect('node__field_metatags', 'node__field_metatags', 'node.nid = node__field_metatags.entity_id AND node_field_data.langcode = node__field_metatags.langcode')
+      .leftJoinAndSelect('node__field_amp_enabled', 'node__field_amp_enabled', 'node.nid = node__field_amp_enabled.entity_id AND node_field_data.langcode = node__field_amp_enabled.langcode')
+      .leftJoinAndSelect('url_alias', 'url_alias', "url_alias.source = concat('/node/', node.nid) AND node_field_data.langcode = url_alias.langcode")
+      .leftJoinAndSelect('taxonomy_term_field_data', 'amp_taxonomy', 'amp_taxonomy.tid = node__field_amp_enabled.field_amp_enabled_target_id')
+      .where('alias = :uri', { uri: uri })
+
+    const dbResult = await query.getRawOne();
+
+    if (!dbResult) {
+      return null
+    }
+
+    const basicPageContent: BasicPageContent = this.basicPageContentFactory.create();
+    
+    basicPageContent.uuid = dbResult.uuid;
+    basicPageContent.uri = dbResult.alias;
+    basicPageContent.createdAt = dbResult.created;
+    basicPageContent.updatedAt = dbResult.changed;
+    basicPageContent.promoted = dbResult.promote;
+    basicPageContent.sticky = dbResult.sticky;
+    basicPageContent.langcode = dbResult.langcode;
+    basicPageContent.title = dbResult.title;
+    basicPageContent.summary = dbResult.body_summary;
+    basicPageContent.body = dbResult.body_value;
+    basicPageContent.hasAmp = dbResult.hasAmp;
+    basicPageContent.metatags = metatagConvert(dbResult.metatags);
+
+    return basicPageContent;
+  }
 
 
 

@@ -16,6 +16,12 @@ export class MockBasicPageContentRepository
     basicPageContent.langcode = langcode
     return basicPageContent;
   }
+  async getByUri(uri: string, langcode: string): Promise<BasicPageContent> {
+    const basicPageContent: BasicPageContent = this.basicPageContentFactory.create();
+    basicPageContent.uri = uri;
+    basicPageContent.langcode = langcode
+    return basicPageContent;
+  }
   async getLanguageVariations(uuid: string): Promise<BasicPageContent[]> {
     const basicPageContent: BasicPageContent = this.basicPageContentFactory.create();
     return [basicPageContent];

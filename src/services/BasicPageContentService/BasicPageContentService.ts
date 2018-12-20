@@ -29,6 +29,20 @@ export class BasicPageContentService {
     return content;
   }
 
+  getByUri(
+    uri: string,
+    langcode: string
+  ): Promise<BasicPageContent> {
+    // check the cache
+
+    // get the content from repository
+    const content = this.repository.getByUri(uri, langcode);
+
+    // save to cache
+
+    return content;
+  }
+
   getLanguageVariations(uuid: string): Promise<BasicPageContent[]> {
     // check the cache
 

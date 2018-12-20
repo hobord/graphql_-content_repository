@@ -77,6 +77,35 @@ export class BasicPageContentResolver {
     return basicPageContent;
   }
 
+  @Query(returns => BasicPageContent, { nullable: true })
+  async getBasicPageContentByUri( @Ctx() ctx: any,
+    @Arg("uri") uri: string,
+    @Arg("language") language: string,
+    @Arg("context", { nullable: true }) context?: ContextInput
+  ): Promise<BasicPageContent | undefined> {
+// if there is context argument we must to convert to hash key object format
+    // and add to request context
+    if (context) {
+      const contextHash: IVisitorContext = context.convertToHash();
+      ctx.visitorContext = contextHash;
+    }
+
+    // get content by uuid from the service (repository)
+    let basicPageContentEntity: BasicPageContentEntity
+    basicPageContentEntity = await this.basicPageContentService.getByUri(
+      uri,
+      language
+    );
+
+    // create a response Object
+    const basicPageContent = new BasicPageContent();
+
+    // fill the response Object by entity
+    basicPageContent.fillWithEntity(basicPageContentEntity);
+
+    return basicPageContent;
+  }
+
   @FieldResolver(type => String, { name: "getSummaryByFormat" })
   async getSummaryByFormat(
     @Root() basicPageContent: BasicPageContent,
