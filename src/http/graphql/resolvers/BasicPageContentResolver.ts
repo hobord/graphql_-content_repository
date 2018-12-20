@@ -1,7 +1,7 @@
 import { Container } from "typedi";
 import { Resolver, Query, Arg, FieldResolver, Root, Ctx } from "type-graphql";
 import { BasicPageContentService } from "@src/services";
-import { DocumentConverterService } from "@src/services";
+import { DocumentFormatConverterService } from "@src/services";
 import { ISegmentationService } from "@src/services";
 import { BasicPageContent } from "../types/BasicPageContent";
 import { ContextInput } from "../types/ContextInput";
@@ -12,7 +12,7 @@ import { IVisitorContext } from "@src/entities";
 export class BasicPageContentResolver {
   constructor(
     protected basicPageContentService?: BasicPageContentService,
-    protected converterService?: DocumentConverterService,
+    protected converterService?: DocumentFormatConverterService,
     protected segmentationService?: ISegmentationService
   ) {
     if (!basicPageContentService) {

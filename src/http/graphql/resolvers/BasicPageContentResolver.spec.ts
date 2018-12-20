@@ -11,17 +11,17 @@ import {
   IBasicPageContentFactory
 } from "@src/entities";
 import { BasicPageContentResolver } from "./BasicPageContentResolver";
-import { BasicPageContentService } from "@src/services/BasicPageContentService/BasicPageContentService";
+import { BasicPageContentService } from "@src/services";
 import {
-  DocumentConverterService,
-  IDocumentConverter
-} from "@src/services/DocumentConverterService/DocumentConverterService";
+  DocumentFormatConverterService,
+  IDocumentFormatConverter
+} from "@src/services";
 import {
   ISegmentationService,
   MockSegmentationService
-} from "@src/services/SegmentationService/SegmentationService";
+} from "@src/services";
 
-class MockConverter implements IDocumentConverter {
+class MockConverter implements IDocumentFormatConverter {
   async convert(document: string): Promise<string> {
     return document;
   }
@@ -32,7 +32,7 @@ describe("BasicPageContentResolver tests", () => {
   let factory: IBasicPageContentFactory;
   let basicPageContentService: BasicPageContentService;
   let resolver: BasicPageContentResolver;
-  let converterService: DocumentConverterService;
+  let converterService: DocumentFormatConverterService;
   let mockConverter: MockConverter;
   let segmentationService: ISegmentationService;
 
@@ -41,7 +41,7 @@ describe("BasicPageContentResolver tests", () => {
     repository = new MockBasicPageContentRepository(factory);
     basicPageContentService = new BasicPageContentService(repository);
 
-    converterService = new DocumentConverterService();
+    converterService = new DocumentFormatConverterService();
     mockConverter = new MockConverter();
     converterService.addConverter("mock", mockConverter);
 

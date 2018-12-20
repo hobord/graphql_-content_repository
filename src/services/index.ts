@@ -1,3 +1,3 @@
 export * from './BasicPageContentService/BasicPageContentService';
-export * from './DocumentConverterService/DocumentConverterService';
+export * from './DocumentFormatConverterService/DocumentFormatConverterService';
 export * from './SegmentationService/SegmentationService';

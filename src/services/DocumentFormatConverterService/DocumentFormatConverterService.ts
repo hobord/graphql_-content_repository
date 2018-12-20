@@ -1,11 +1,11 @@
-export interface IDocumentConverter {
+export interface IDocumentFormatConverter {
   convert(document: string): Promise<string>
 }
 
-export class DocumentConverterService {
-  protected converters: Map<string, IDocumentConverter> = new Map<string, IDocumentConverter>();
+export class DocumentFormatConverterService {
+  protected converters: Map<string, IDocumentFormatConverter> = new Map<string, IDocumentFormatConverter>();
 
-  addConverter(name: string, converter: IDocumentConverter) {
+  addConverter(name: string, converter: IDocumentFormatConverter) {
     this.converters.set(name, converter);
   }
 

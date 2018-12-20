@@ -1,6 +1,6 @@
-import { IDocumentConverter } from '../DocumentConverterService';
+import { IDocumentFormatConverter } from '../DocumentFormatConverterService';
 
-export class Html2Markdown implements IDocumentConverter {
+export class Html2Markdown implements IDocumentFormatConverter {
   protected turndownService
   constructor() {
     const TurndownService = require('turndown')
