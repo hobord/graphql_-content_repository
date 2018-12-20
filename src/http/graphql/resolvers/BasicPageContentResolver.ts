@@ -26,7 +26,7 @@ export class BasicPageContentResolver {
     }
   }
 
-  formatDocument(document: string, to, context?): string {
+  async formatDocument(document: string, to, context?): Promise<string> {
     // make segmentation
     if (context && context.visitorContext) {
       document = this.segmentationService.contentSegmentation(
@@ -36,7 +36,7 @@ export class BasicPageContentResolver {
     }
 
     // make document format conversion
-    document = this.converterService.convert(document, to);
+    document = await this.converterService.convert(document, to);
 
     return document;
   }
@@ -92,7 +92,7 @@ export class BasicPageContentResolver {
     );
 
     // do the conversion
-    document = this.formatDocument(document, type);
+    document = await this.formatDocument(document, type);
 
     return document;
   }
@@ -112,7 +112,7 @@ export class BasicPageContentResolver {
     );
 
     // do the conversion
-    document = this.formatDocument(document, type);
+    document = await this.formatDocument(document, type);
 
     return document;
   }

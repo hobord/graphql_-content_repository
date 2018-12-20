@@ -1,5 +1,5 @@
 export interface IDocumentConverter {
-  convert(document: string): string
+  convert(document: string): Promise<string>
 }
 
 export class DocumentConverterService {
@@ -9,9 +9,9 @@ export class DocumentConverterService {
     this.converters.set(name, converter);
   }
 
-  convert(document: string, toType: string): string {
+  async convert(document: string, toType: string): Promise<string> {
     if (this.converters.has(toType)) {
-      return this.converters.get(toType).convert(document)
+      return await this.converters.get(toType).convert(document)
     }
     return document
   }

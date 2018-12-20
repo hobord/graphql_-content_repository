@@ -22,7 +22,7 @@ import {
 } from "@src/services/SegmentationService/SegmentationService";
 
 class MockConverter implements IDocumentConverter {
-  convert(document: string): string {
+  async convert(document: string): Promise<string> {
     return document;
   }
 }
@@ -56,13 +56,13 @@ describe("BasicPageContentResolver tests", () => {
 
   it("formatDocument test with null context and converter", async () => {
     const document: string = faker.lorem.paragraphs(3);
-    const result: string = resolver.formatDocument(document, null, null);
+    const result: string = await resolver.formatDocument(document, null, null);
     expect(result).equal(document);
   });
 
   it("formatDocument test with null context and mock converter", async () => {
     const document: string = faker.lorem.paragraphs(3);
-    const result: string = resolver.formatDocument(document, null, "mock");
+    const result: string = await resolver.formatDocument(document, null, "mock");
     expect(result).equal(document);
   });
 });
