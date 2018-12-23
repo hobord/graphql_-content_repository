@@ -83,7 +83,7 @@ export class BasicPageContentResolver {
     @Arg("language") language: string,
     @Arg("context", { nullable: true }) context?: ContextInput
   ): Promise<BasicPageContent | undefined> {
-// if there is context argument we must to convert to hash key object format
+    // if there is context argument we must to convert to hash key object format
     // and add to request context
     if (context) {
       const contextHash: IVisitorContext = context.convertToHash();

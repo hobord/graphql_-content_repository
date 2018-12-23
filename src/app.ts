@@ -4,7 +4,7 @@ require("module-alias/register");
 import { logger } from "./lib/logger";
 import { createConnection } from "typeorm";
 import { httpServer } from './http';
-import { addGrapQL } from './http/graphql/graphql'
+import { addGrapQL } from './graphql'
 require('./services/boot');
 
 addGrapQL(httpServer).then(() => {

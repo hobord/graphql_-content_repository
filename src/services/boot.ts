@@ -5,7 +5,7 @@ import { BasicPageContentService, DocumentFormatConverterService } from './';
 // BasicPageContentMockFactory,
 import { IBasicPageContentFactory, BasicPageContentEmptyFactory } from '@src/entities';
 import { MockSegmentationService, ISegmentationService } from './';
-import { DrupalBasicPageContentRepository } from '@src/repositories/BasicPageContentRepository';
+import { DrupalBasicPageContentRepository } from '@src/Drupal/repositories';
 import { IDocumentFormatConverter } from './';
 import { Html2Text } from './DocumentFormatConverterService/Corverters/Html2Text';
 import { Html2Markdown } from './DocumentFormatConverterService/Corverters/Html2Markdown';

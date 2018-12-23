@@ -1,7 +1,7 @@
-import { IBasicPageContentRepository } from "../IBasicPageContentRepository";
+import { IBasicPageContentRepository } from "@src/repositories";
 import { BasicPageContent } from "@src/entities";
 import { getConnection } from "typeorm";
-import { metatagConvert } from '@src/lib/drupal/MetatagConverter';
+import { metatagConvert } from '@src/Drupal/lib/MetatagConverter';
 
 /*
 SELECT 
