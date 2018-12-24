@@ -1,1 +1,1 @@
-export * from './TypeormDrupal/DrupalBasicPageContentRepository'
+export * from './Typeorm/DrupalBasicPageContentRepository'
